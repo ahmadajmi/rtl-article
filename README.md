@@ -133,13 +133,8 @@ We can include these variables in external files, but this is just for keeping t
 And this should be the content inside our main `style.scss`
 
 ```
-// Imports
-@import 'mixins';
-
-// Author Style
-
 body {
-	direction: $default-direction
+	direction: $default-direction;
 }
 
 .media {
@@ -148,10 +143,13 @@ body {
 }
 ```
 
-We used Sass variable interpolation fo `padding-#{$opposite-float}`, so we can then generate the CSS property which will be evaluated as
+We used our prefefined Sass variabls like `$default-float` and Sass interpolation in `padding-#{$opposite-float}`, so then Grunt can take care of this and help generate two files as described above as:
 
 ``` css
 // ltr-app.css
+
+body { direction: ltr; }
+
 .media {
 	float: left;
   	padding-right: 10px;
@@ -160,17 +158,18 @@ We used Sass variable interpolation fo `padding-#{$opposite-float}`, so we can t
 
 ``` css
 // rtl-app.css
+
+body { direction: rtl; }
+
 .media {
 	float: right;
-  	padding-left: 10px;
+  padding-left: 10px;
 }
 ```
 
-As you can see this file is the core Sass file which will include all other files and may be contain some general styles.
-
 ## Working with Helper Classes and Templates
 
-When working with Helper Classes mixed with template files (HTML - erb) or any other template engine, we will face a problem here. Let's see an example.
+When working with [Helper Classes][helper-classes] mixed with template files like HTML, erb or any other template engine, we will get a problem here. Let's see an example.
 
 ``` html
 <div class="text-left">
@@ -183,7 +182,7 @@ When working with Helper Classes mixed with template files (HTML - erb) or any o
 .text-right  { text-align: right; }
 ```
 
-The html above will not change as we write HTML for all languages, so the above `div` will be always be aligned to the left. But this is not what we want to do, we want to align it to the left in LTR and to the right in RTL.
+The `div` content will always align the content to the left as it takes the `text-left` class, but We need a way to dynamically change the `-left` part to `-right` for RTL.
 
 We can solve this issue by using some variables in HTMl like
 
@@ -280,4 +279,4 @@ http://stackoverflow.com/questions/25749044/add-a-rtl-scss-file-to-zurb-foundati
 [sass]: http://sass-lang.com/
 [grunt]: http://gruntjs.com/
 [grunt-sass]: https://github.com/sindresorhus/grunt-sass
-
+[helper-classes]: http://www.sitepoint.com/using-helper-classes-dry-scale-css/
