@@ -51,9 +51,24 @@ aside { float: left; }
 
 The problem here is that we will write more code that just do overight to original code and the old one and loading two files in the second option.This is a very bad practice and time consuming.
 
-Now how can we improve this workflow, the solution I have used is to use a CSS preprocessor like [Sass][sass] and a JavaScript task manager like [Grunt][grunt] to automate and enhance the workflow.
+Now how can we improve this workflow, the solution I have used is to use a CSS preprocessor like [Sass][sass] and a JavaScript task runner like [Grunt][grunt] to automate and enhance the workflow.
 
-## Setup grunt tasks
+## Setup Grunt
+
+By using a Grunt task runner and Sass we can automate and solve all the problems we have, the theory here is to write CSS in one core file and then generate two other files each one for each direction then include each file in the header based on the language beign used.
+
+The Grunt task used for this that will compile Sass to CSS is [grunt-sass][grunt-sass].
+
+``` javascript
+{
+  "name": "rtl-sass-grunt",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-sass": "^0.16.1"
+  }
+}
+```
 
 ``` javascript
 module.exports = function(grunt) {
@@ -77,65 +92,48 @@ module.exports = function(grunt) {
 };
 ```
 
-``` javascript
-{
-  "name": "rtl-sass-grunt",
-  "version": "0.1.0",
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-sass": "^0.16.1"
-  }
-}
-```
+The Sass task takes two files one for `ltr-app.scss` and `rtl-app.scss` and generate the CSS files from them. We will see what's inside theses files later.
 
-The most important grunt task we will use is the [grunt-sass][grunt-sass].
+We talked about the core file, let's call it `style.scss` and it's job is to include all our CSS or include other project files. This file will be imported in both `ltr-app.scss` and `rtl-app.scss`.
 
-The important thing in the previous code is the Sass task that deals with two Sass files, one for the default normal direction (LTR) and one for the other direction (RTL).
-
-Another file (`style.scss`) is the main Sass file that we can import other project files inside it and also that file will be imported in both `ltr-app.scss` and `rtl-app.scss` files.
-
-
-Second we will setup Sass variables to handle each direction.
+We can now setup and see what's inside `ltr-app.scss` file
 
 ```css
-$default-float:       left  !default;
-$opposite-float:      right !default;
+// LTR languages directions.
 
-$default-direction:   ltr   !default;
-$opposite-direction:  ltr   !default;
-```
+$def-float:       left  !default;
+$opp-float:      right  !default;
 
-But what about the content of `ltr-app.scss` and `rtl-app.scss` files, as above we will import `style.scss` in both files, but in the `rtl-app.scss` we will overite variables to be the oppisite direction (RTL).
-
-Let's see the content of both files and we start with `ltr-app.scss`
-
-``` css
-// Import the main style
-
-@import 'style';
-```
-
-And `rtl-app.scss` will look like this
-
-``` css
-// Rsset float && direction, this is the default for RTL languages
-
-$default-float:       right;
-$opposite-float:      left;
-
-$default-direction:   rtl;
-$opposite-direction:  ltr;
+$def-direction:   ltr   !default;
+$opp-direction:  rtl    !default;
 
 // Import the main style
 
 @import 'style';
 ```
+
+And `rtl-app.scss` wil be.
+
+```css
+// LTR languages directions.
+
+$def-float:      right  !default;
+$opp-float:       left  !default;
+
+$def-direction:    rtl  !default;
+$opp-direction:    ltr  !default;
+
+// Import the main style
+
+@import 'style';
+```
+
+We can include these variables in external files, but this is just for keeping things more clear.
 
 And this should be the content inside our main `style.scss`
 
 ```
-// Import variables and other Sass files
-@import 'variables';
+// Imports
 @import 'mixins';
 
 // Author Style
