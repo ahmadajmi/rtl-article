@@ -135,7 +135,7 @@ The `style.scss` will include all our CSS or include other project files. This f
 
 And this is an example of what `style.scss` looks like
 
-```
+``` css
 body {
 	direction: $default-direction;
 }
@@ -178,22 +178,22 @@ body { direction: rtl; }
 
 A very good trick I experienced before is how to add an image with a specefic direction as a CSS background, from the code above we will create two images `arror-left.png` and `arror-right.png` and then in the Sass code the variable will be changed between `left` and `right`.
 
-## Server side setup
+## Server Side Setup
 
-For more flexibility working on multilingual projects, configuring server side to provide some variables to work with in templates will be super important.
+For more flexibility working on multilingual projects, configuring the server side to provide some variables to use in templates will be super important.
 
-What we need from the server side is to define a very similar variables like we to do what we have done with Sass but this time they will be used inside templates or views. Every backend solution should provide a way to create theses variables and pass them in views. Variables like `def-float` and `def-direction`.
+What we need from the server side is to define a very similar variables like we did with Sass but this time they will be used inside templates or views. Every backend solution should provide a way to create theses variables and pass them in views. Variables like `def-float` and `def-direction`.
 
-Setting server side configuration will enable us switch between the generated CSS files as
+Setting server side configuration will enable us to switch between the generated CSS files for the detected direction.
 
 ``` html
 <!DOCTYPE html>
 <html lang="..">
   <head>
-    <%= if dir is rtl %>
-  	<link rel="stylesheet" href="css/rtl-app.css">
-  	<%= else %>
+    <%= if def-direction is ltr %>
   	<link rel="stylesheet" href="css/ltr-app.css">
+  	<%= else %>
+  	<link rel="stylesheet" href="css/rtl-app.css">
   	<%= end %>
   </head>
   <body>
@@ -207,9 +207,9 @@ Or we can use the variable inside the CSS file name itself like
 
 ``` html
 <link rel="stylesheet" href="css/#{def-direction}-app.css">
-``
+```
 
-The if statement above and the file name variable is just a sudocode and will depend on your template engine and your server side configuration.
+The if statement above and the file name variable is just a Pseudocode[pseudocode] and it will depend on your template engine and your server side configuration. So ask your smart fellow developer to help you on this or search for Google based on your technology to do it.
 
 ### Working with Helper Classes and Templates
 
@@ -270,12 +270,10 @@ For more Sass mixins for different usage you can read the source code of [bi-app
 
 As we saw this solution fixed the RTL and LTR was very well, Grunt Sass are doing things we no longer want to do manually.
 
-http://stackoverflow.com/questions/25749044/add-a-rtl-scss-file-to-zurb-foundation-5
-
-[bi-app-sass]: https://github.com/anasnakawa/bi-app-sass/blob/master/bi-app/_mixins.scss
-
 [sass]: http://sass-lang.com/
 [grunt]: http://gruntjs.com/
 [grunt-sass]: https://github.com/sindresorhus/grunt-sass
 [interpolation]: http://sass-lang.com/documentation/file.SASS_REFERENCE.html#interpolation_
+[pseudocode]: http://en.wikipedia.org/wiki/Pseudocode
 [helper-classes]: http://www.sitepoint.com/using-helper-classes-dry-scale-css/
+[bi-app-sass]: https://github.com/anasnakawa/bi-app-sass/blob/master/bi-app/_mixins.scss
