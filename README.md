@@ -1,23 +1,24 @@
 Manage RTL CSS with Sass and Grunt.
 -----------------------------------
 
-As a native Arabic speaker I have worked on many multilingual websites before, some websites was already exist with only LTR CSS support then I have to support RTL and some projects started it from scratch. Before I start using Sass and Grunt, supporting both directions was a nightmare and a time waste process in addition to code repetition.
+As a native Arabic speaker I have worked on many multilingual websites before, some was already exist with only LTR CSS support then I have to support RTL and some projects started from scratch. Before I start using Sass and Grunt, supporting both directions was a nightmare and a time waste process in addition to code repetition.
 
 The very important thing when working on multilingual projects with two directions is to write CSS that support both RTL and LTR in an effective, automated and dynamic way that we don't have to repeat or override CSS.
 
-What's the difference between the two directions is general and most cases is working float, direction, padding and margin properties. Theses are mostly what we will work with and mostly all our CSS code consist of all of them.
+The differences between the two directions in general and most cases is floating direction, text align, padding and margin sides values.
 
-## The problem
+## The Problem
 
-Let's see how supporting RTL is not a straightforward in practice and how we can solve this. In most cases i saw before adding a new direction support was to add a new CSS file in the header and start to override and repeat code over and over to change `floats`, `padding-left` or `text-align` for different section.
+Let's see how supporting RTL and LTR in the same project is not a straightforward in practice and how we can solve this. In some cases I saw before adding a new direction support was to add a new CSS file in the header and start to override and repeat code over and over to change some CSS properties like `floats`, `padding-left` or `text-align` for different components.
 
-Let's say this is the code for the RTL language template, we added the `lang="ar"` attribute for the labguage support, this attribute value should be dynamically change based on the language detection from the serverside for example.
+Let's say this is the code for the RTL language template, we added the `lang="ar"` attribute for the labguage support, this attribute value should be dynamically changed based on the language detection from the server side.
 
 ``` html
 <!DOCTYPE html>
 <html lang="ar">
   <head>
   	<link rel="stylesheet" href="css/app.css">
+  	<link rel="stylesheet" href="css/rtl-app.css">
   </head>
   <body>
   	<main>Main contant</main>
@@ -26,34 +27,38 @@ Let's say this is the code for the RTL language template, we added the `lang="ar
 </html>
 ```
 
-The layout requires that in the normal direction the `main` section should be floated to the left, while `aside` should be to the right.
+The layout requires that in the normal direction (LTR) the `main` section should be floated to the left, while `aside` should be to the right.
+
 
 ``` css
+// app.css
 main  { float: left; }
 aside { float: right; }
 ```
 
-Now for the RTL direction we should do the same thing above but in the oppisite direction so the `main` section should be floated to the right, while `aside` should be to the left or to mirror the layout. so this will be the code to overide the original style in the same file
+Now for the RTL direction we should do the same thing above but in the oppisite direction or to mirror the layout. so this will be the code to overide the original style in the same file.
 
 ``` css
+// app.css
 [lang='ar'] main  { float: right; }
 [lang='ar'] aside { float: left; }
 ```
 
-or in a new CSS file appended to the original CSS file in the header we can do it like so
+or in a new CSS file appended in the header we can do it like so.
 
 ``` css
+// rtl-app.css
 main  { float: right; }
 aside { float: left; }
 ```
 
-The problem here is that we will write more code that just do override to original code and the old one and loading two files in the second option.This is a very bad practice and time consuming.
+The problem here is that we will write more code to override the original code, loading more than one CSS file. This is a very bad practice and time consuming.
 
 Now how can we improve this workflow, the solution I have used is to use a CSS preprocessor like [Sass][sass] and a JavaScript task runner like [Grunt][grunt] to automate and enhance the workflow.
 
 ## Setup Grunt
 
-By using a Grunt task runner and Sass we can automate and solve all the problems we have, the theory here is to write CSS in one core file and then generate two other files each one for each direction then include each file in the header based on the language being used.
+By using Grunt and Sass we can automate and solve all the problems we have, the theory here is to write CSS in one core file and then generate two other files each one for each direction then include each file in the header based on the language being used.
 
 The Grunt task used for this that will compile Sass to CSS is [grunt-sass][grunt-sass].
 
@@ -90,11 +95,9 @@ module.exports = function(grunt) {
 };
 ```
 
-The Sass task takes two files one for `ltr-app.scss` and `rtl-app.scss` and generate the CSS files from them.
+The Sass task takes two files one for `ltr-app.scss` and `rtl-app.scss` and generate the CSS files from them. In both files we will define some variables for floats and directions and then import the code Sass file at the end.
 
-We talked about the core file, let's call it `style.scss` and its job is to include all our CSS or include other project files. This file will be imported in both `ltr-app.scss` and `rtl-app.scss`.
-
-We can now setup and see what's inside `ltr-app.scss` file
+`ltr-app.scss` file
 
 ```css
 // LTR languages directions.
@@ -110,10 +113,10 @@ $opp-direction:  rtl    !default;
 @import 'style';
 ```
 
-And `rtl-app.scss` wil be.
+And `rtl-app.scss`
 
 ```css
-// LTR languages directions.
+// RTL languages directions.
 
 $def-float:      right  !default;
 $opp-float:       left  !default;
@@ -126,7 +129,9 @@ $opp-direction:    ltr  !default;
 @import 'style';
 ```
 
-We can include these variables in external files, but this is just for keeping things more clear and give you the idea.
+We can include these variables in external files, but this is just for keeping things more clear and gives you the main idea.
+
+The `style.scss` will include all our CSS or include other project files. This file will be imported in both `ltr-app.scss` and `rtl-app.scss` as we did.
 
 And this is an example of what `style.scss` looks like
 
@@ -143,7 +148,7 @@ body {
 .button { background-image: url("images/arror-#{default-float}.png"); }
 ```
 
-We used our predefined Sass variables like `$default-float` and Sass interpolation in `padding-#{$opposite-float}`, so then Grunt can take care of this and help generate two files as described above as:
+We used our Sass variables like `$default-float` and [Sass interpolation][interpolation] in `padding-#{$opposite-float}`, so then Grunt can take care of this and generate two files as:
 
 ``` css
 // ltr-app.css
@@ -171,7 +176,7 @@ body { direction: rtl; }
 .button { background-image: url(images/arror-left.png); }
 ```
 
-A very good trick I experienced before is how to add some image that have a specific direction as a CSS background, from the code above we  will create two images `arror-left.png` and `arror-right.png` and then in the Sass code the variable will be changed between `left` and `right`.
+A very good trick I experienced before is how to add an image with a specefic direction as a CSS background, from the code above we will create two images `arror-left.png` and `arror-right.png` and then in the Sass code the variable will be changed between `left` and `right`.
 
 ## Server side setup
 
@@ -272,4 +277,5 @@ http://stackoverflow.com/questions/25749044/add-a-rtl-scss-file-to-zurb-foundati
 [sass]: http://sass-lang.com/
 [grunt]: http://gruntjs.com/
 [grunt-sass]: https://github.com/sindresorhus/grunt-sass
+[interpolation]: http://sass-lang.com/documentation/file.SASS_REFERENCE.html#interpolation_
 [helper-classes]: http://www.sitepoint.com/using-helper-classes-dry-scale-css/
