@@ -238,37 +238,53 @@ We can solve this issue by using some variables in the template
 
 ## Sass Mixins
 
-So we have tried to use Sass variables and interpolations in our Sas code, is ther any thing that could be better and easier in writing. yes. We can create Sass mixins to handle theses things for us.
+So we have used Sass variables and interpolations, another way for making this more simpler is to build a set of Sass mixins.
 
 ```css
 @mixin float($dir) {
   @if $dir == left {
-    float: $default-float;
+    float: $def-float;
+    } @else if $dir == right {
+      float: $opp-float;
     } @else {
-      float: $opposite-float;
-    }
+      float: $dir;
+  }
 }
 
 @mixin text-align($dir) {
   @if $dir == left {
-    text-align: $default-float;
+    text-align: $def-float;
     } @else if $dir == right {
-      text-align: $opposite-float;
+      text-align: $opp-float;
     } @else {
       text-align: $dir;
-    }
+  }
 }
 
 @mixin padding-left($unit) {
   padding-#{$def-float}: $unit;
 }
+
+@mixin padding-right($unit) {
+  padding-#{$opp-float}: $unit;
+}
 ```
 
-For more Sass mixins for different usage you can read the source code of [bi-app-sass][bi-app-sass]
+Which later we can use it like
+
+``` css
+.media {
+  @include float(left);
+  @include padding-right(10px);
+  @include text-align(left);
+}
+```
+
+For more Sass mixins for different usage you can read the source code of [bi-app-sass][bi-app-sass] which inspired me for the above mixins.
 
 ## Conclusion
 
-As we saw this solution fixed the RTL and LTR was very well, Grunt Sass are doing things we no longer want to do manually.
+Using Grunt and Sass are not the only tools for doing this, you can use whatever tool you like for making the same thing. I hope you got the idea of using variables for manipulating directions in Sass and in your template files.
 
 [sass]: http://sass-lang.com/
 [grunt]: http://gruntjs.com/
