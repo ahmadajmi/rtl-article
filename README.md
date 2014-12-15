@@ -36,7 +36,7 @@ main  { float: left; }
 aside { float: right; }
 ```
 
-Now for the RTL direction we should do the same thing above but in the oppisite direction or to mirror the layout. so this will be the code to overide the original style in the same file.
+Now for the RTL direction we should do the same thing above but in the oppisite direction or to mirror the layout, this will be the code to overide the original style in the same file.
 
 ``` css
 // app.css
@@ -52,13 +52,13 @@ main  { float: right; }
 aside { float: left; }
 ```
 
-The problem here is that we will write more code to override the original code, loading more than one CSS file. This is a very bad practice and time consuming.
+The problem here is that we will write more code to override the original code, loading more than one CSS file. This is not a good practice and time consuming.
 
 Now how can we improve this workflow, the solution I have used is to use a CSS preprocessor like [Sass][sass] and a JavaScript task runner like [Grunt][grunt] to automate and enhance the workflow.
 
 ## Setup Grunt
 
-By using Grunt and Sass we can automate and solve all the problems we have, the theory here is to write CSS in one core file and then generate two other files each one for each direction then include each file in the header based on the language being used.
+By using Grunt and Sass we can automate and solve all the problems we have, the theory here is to write CSS in one core file and then generate two other files each one for each direction then include each file in the header based on the language used.
 
 The Grunt task used for this that will compile Sass to CSS is [grunt-sass][grunt-sass].
 
@@ -102,11 +102,11 @@ The Sass task takes two files one for `ltr-app.scss` and `rtl-app.scss` and gene
 ```css
 // LTR languages directions.
 
-$def-float:       left  !default;
-$opp-float:      right  !default;
+$default-float:          left  !default;
+$opposite-float:        right  !default;
 
-$def-direction:   ltr   !default;
-$opp-direction:  rtl    !default;
+$default-direction:       ltr  !default;
+$opposite-direction:      rtl  !default;
 
 // Import the main style
 
@@ -118,11 +118,11 @@ And `rtl-app.scss`
 ```css
 // RTL languages directions.
 
-$def-float:      right  !default;
-$opp-float:       left  !default;
+$default-float:         right  !default;
+$opposite-float:         left  !default;
 
-$def-direction:    rtl  !default;
-$opp-direction:    ltr  !default;
+$default-direction:       rtl  !default;
+$opposite-direction:      ltr  !default;
 
 // Import the main style
 
@@ -131,7 +131,7 @@ $opp-direction:    ltr  !default;
 
 We can include these variables in external files, but this is just for keeping things more clear and gives you the main idea.
 
-The `style.scss` will include all our CSS or include other project files. This file will be imported in both `ltr-app.scss` and `rtl-app.scss` as we did.
+The `style.scss` will include all our CSS or include other project files. This file will imported in both `ltr-app.scss` and `rtl-app.scss` as we did.
 
 And this is an example of what `style.scss` looks like
 
@@ -176,13 +176,13 @@ body { direction: rtl; }
 .button { background-image: url(images/arror-left.png); }
 ```
 
-A very good trick I experienced before is how to add an image with a specefic direction as a CSS background, from the code above we will create two images `arror-left.png` and `arror-right.png` and then in the Sass code the variable will be changed between `left` and `right`.
+A good trick I experienced before is how to add an image with a specefic direction as a CSS background, from the code above we will create two images `arror-left.png` and `arror-right.png` and then in the Sass code the variable will be changed between `left` and `right`.
 
 ## Server Side Setup
 
 For more flexibility working on multilingual projects, configuring the server side to provide some variables to use in templates will be super important.
 
-What we need from the server side is to define a very similar variables like we did with Sass but this time they will be used inside templates or views. Every backend solution should provide a way to create theses variables and pass them in views. Variables like `def-float` and `def-direction`.
+What we need from the server side is to define a similar variables like we did with Sass but this time we will use them inside templates or views. Every back-end solution should provide a way to create theses variables and pass them in views. Variables like `def-float` and `def-direction`.
 
 Setting server side configuration will enable us to switch between the generated CSS files for the detected direction.
 
@@ -209,7 +209,7 @@ Or we can use the variable inside the CSS file name itself like
 <link rel="stylesheet" href="css/#{def-direction}-app.css">
 ```
 
-The if statement above and the file name variable is just a Pseudocode[pseudocode] and it will depend on your template engine and your server side configuration. So ask your smart fellow developer to help you on this or search for Google based on your technology to do it.
+The if statement above and the file name variable is just a Pseudocode[pseudocode] and it will depend on your template engine and your server side configuration. Ask your smart fellow developer to help you on this or search for Google based on your technology to do it.
 
 ### Working with Helper Classes and Templates
 
@@ -238,7 +238,7 @@ We can solve this issue by using some variables in the template
 
 ## Sass Mixins
 
-So we have used Sass variables and interpolations, another way for making this more simpler is to build a set of Sass mixins.
+We have used Sass variables and interpolations, another way for making this more simpler is to build a set of Sass mixins.
 
 ```css
 @mixin float($dir) {
