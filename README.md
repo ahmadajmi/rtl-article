@@ -1,9 +1,9 @@
 Manage RTL CSS with Sass and Grunt.
 -----------------------------------
 
-As a native Arabic speaker I have worked on many multilingual websites before, some was already exist with only LTR CSS support then I have to support RTL and some projects started from scratch. Before I start using Sass and Grunt, supporting both directions was a nightmare and a time waste process in addition to code repetition.
+As a native Arabic speaker I have worked on multilingual websites before, some was already exist with LTR CSS support then I have to support RTL and some projects started from scratch. Before I start using Sass and Grunt, supporting both directions was a nightmare and a time waste process plus to code repetition.
 
-The very important thing when working on multilingual projects with two directions is to write CSS that support both RTL and LTR in an effective, automated and dynamic way that we don't have to repeat or override CSS.
+The important thing when working on multilingual projects with two directions is to write CSS that support both RTL and LTR in an effective, automated and dynamic way that we don't have to repeat or override CSS.
 
 The differences between the two directions in general and most cases is floating direction, text align, padding and margin sides values.
 
@@ -27,7 +27,7 @@ Let's say this is the code for the RTL language template, we added the `lang="ar
 </html>
 ```
 
-The layout requires that in the normal direction (LTR) the `main` section should be floated to the left, while `aside` should be to the right.
+The layout requires that in the normal direction (LTR) the `main` section should be float to the left, while `aside` should be to the right.
 
 
 ``` css
@@ -176,7 +176,7 @@ body { direction: rtl; }
 .button { background-image: url(images/arror-left.png); }
 ```
 
-A good trick I experienced before is how to add an image with a specefic direction as a CSS background, from the code above we will create two images `arror-left.png` and `arror-right.png` and then in the Sass code the variable will be changed between `left` and `right`.
+A good trick I experienced before is how to add an image with a specefic direction as a CSS background, from the code above we will create two images `arror-left.png` and `arror-right.png` and then in the Sass code the variable will change between `left` and `right`.
 
 ## Server Side Setup
 
@@ -284,7 +284,7 @@ For more Sass mixins for different usage you can read the source code of [bi-app
 
 ## Conclusion
 
-Using Grunt and Sass are not the only tools for doing this, you can use whatever tool you like for making the same thing. I hope you got the idea of using variables for manipulating directions in Sass and in your template files.
+You can use whatever tool other than Grunt and Sass you for making the same thing. I hope you got the idea of using variables for manipulating directions in Sass and in your template files.
 
 [sass]: http://sass-lang.com/
 [grunt]: http://gruntjs.com/
