@@ -1,7 +1,7 @@
 Manage RTL CSS with Sass and Grunt.
 -----------------------------------
 
-As a native Arabic speaker I have worked on multilingual websites before, some was already exist with LTR CSS support then I have to support RTL and some projects started from scratch. Before I start using Sass and Grunt, supporting both directions was a nightmare and a time waste process plus to code repetition.
+As a native Arabic speaker I have worked on multilingual websites before, some was already exist with LTR (Left to Right) CSS support then I have to support RTL (Right to Left) and some projects started from scratch. Before I start using Sass and Grunt, supporting both directions was a nightmare and a time waste process plus to code repetition.
 
 The important thing when working on multilingual projects with two directions is to write CSS that support both RTL and LTR in an effective, automated and dynamic way that we don't have to repeat or override CSS.
 
@@ -11,7 +11,7 @@ The differences between the two directions in general and most cases is floating
 
 Let's see how supporting RTL and LTR in the same project is not a straightforward in practice and how we can solve this. In some cases I saw before adding a new direction support was to add a new CSS file in the header and start to override and repeat code over and over to change some CSS properties like `floats`, `padding-left` or `text-align` for different components.
 
-Let's say this is the code for the RTL language template, we added the `lang="ar"` attribute for the labguage support, this attribute value should be dynamically changed based on the language detection from the server side.
+Let's say this is the code for the RTL language template, we added the `lang="ar"` attribute for the language support, this attribute value should be dynamically changed based on the language detection from the server side.
 
 ``` html
 <!DOCTYPE html>
@@ -52,15 +52,15 @@ main  { float: right; }
 aside { float: left; }
 ```
 
-The problem here is that we will write more code to override the original code, loading more than one CSS file. This is not a good practice and time consuming.
+The problem here is that we will write more code to override the original code, loading more than one CSS file. This is not a good practice and a time consuming.
 
-Now how can we improve this workflow, the solution I have used is to use a CSS preprocessor like [Sass][sass] and a JavaScript task runner like [Grunt][grunt] to automate and enhance the workflow.
+Now how we can improve this workflow, the solution I have used is to use a CSS preprocessor like [Sass][sass] and a JavaScript task runner like [Grunt][grunt] to automate and enhance the workflow.
 
 ## Setup Grunt
 
 By using Grunt and Sass we can automate and solve all the problems we have, the theory here is to write CSS in one core file and then generate two other files each one for each direction then include each file in the header based on the language used.
 
-The Grunt task used for this that will compile Sass to CSS is [grunt-sass][grunt-sass].
+The Grunt task used for compiling	 Sass to CSS is [grunt-sass][grunt-sass].
 
 ``` javascript
 {
@@ -95,7 +95,7 @@ module.exports = function(grunt) {
 };
 ```
 
-The Sass task takes two files one for `ltr-app.scss` and `rtl-app.scss` and generate the CSS files from them. In both files we will define some variables for floats and directions and then import the code Sass file at the end.
+The Sass task takes two files one for `ltr-app.scss` and `rtl-app.scss` then generate the CSS files from them. In both files we will define some variables for floats and directions and then import the code Sass file at the end.
 
 `ltr-app.scss` file
 
@@ -129,11 +129,11 @@ $opposite-direction:      ltr  !default;
 @import 'style';
 ```
 
-We can include these variables in external files, but this is just for keeping things more clear and gives you the main idea.
+We can include these variables in external files, but this is just for keeping things more clear and to give you the main idea.
 
-The `style.scss` will include all our CSS or include other project files. This file will imported in both `ltr-app.scss` and `rtl-app.scss` as we did.
+The `style.scss` will include all our CSS or include other project files. This file will imported in both `ltr-app.scss` and `rtl-app.scss`.
 
-And this is an example of what `style.scss` looks like
+And this is an example of what `style.scss` looks like.
 
 ``` css
 body {
@@ -148,7 +148,7 @@ body {
 .button { background-image: url("images/arror-#{default-float}.png"); }
 ```
 
-We used our Sass variables like `$default-float` and [Sass interpolation][interpolation] in `padding-#{$opposite-float}`, so then Grunt can take care of this and generate two files as:
+We used our Sass variables like `$default-float` and [Sass interpolation][interpolation] in `padding-#{$opposite-float}`, then Grunt can take care of this and generate two files as:
 
 ``` css
 // ltr-app.css
@@ -180,7 +180,7 @@ A good trick I experienced before is how to add an image with a specefic directi
 
 ## Server Side Setup
 
-For more flexibility working on multilingual projects, configuring the server side to provide some variables to use in templates will be super important.
+For more flexibility working on multilingual projects, configuring the server side to provide some variables to use in template files will be important.
 
 What we need from the server side is to define a similar variables like we did with Sass but this time we will use them inside templates or views. Every back-end solution should provide a way to create theses variables and pass them in views. Variables like `def-float` and `def-direction`.
 
@@ -203,13 +203,13 @@ Setting server side configuration will enable us to switch between the generated
 </html>
 ```
 
-Or we can use the variable inside the CSS file name itself like
+Or we can use the variable inside the CSS file name itself.
 
 ``` html
 <link rel="stylesheet" href="css/#{def-direction}-app.css">
 ```
 
-The if statement above and the file name variable is just a Pseudocode[pseudocode] and it will depend on your template engine and your server side configuration. Ask your smart fellow developer to help you on this or search for Google based on your technology to do it.
+The if statement above and the file name variable is just a [Pseudocode][pseudocode] and it will depend on your template engine and your server side configuration. Ask your smart fellow developer to help you on this or search for Google based on your technology to do it.
 
 ### Working with Helper Classes and Templates
 
@@ -228,7 +228,7 @@ When working with [Helper Classes][helper-classes] mixed with template files lik
 
 The `div` content will always align the content to the left as it takes the `text-left` class, but we need a way to dynamically change the `-left` part to `-right` for RTL.
 
-We can solve this issue by using some variables in the template
+We can solve this issue by using one of our template variables.
 
 ``` html
 <div class="text-#{default-float}">
@@ -284,7 +284,9 @@ For more Sass mixins for different usage you can read the source code of [bi-app
 
 ## Conclusion
 
-You can use whatever tool other than Grunt and Sass you for making the same thing. I hope you got the idea of using variables for manipulating directions in Sass and in your template files.
+You can use whatever tool other than Grunt and Sass for doing the same thing, getting the idea of using Sass variables for manipulating directions and changing variables in template files is the core idea.
+
+You can check out the code used in this post in [rtl-grunt-sass][rtl-grunt-sass].
 
 [sass]: http://sass-lang.com/
 [grunt]: http://gruntjs.com/
@@ -293,3 +295,4 @@ You can use whatever tool other than Grunt and Sass you for making the same thin
 [pseudocode]: http://en.wikipedia.org/wiki/Pseudocode
 [helper-classes]: http://www.sitepoint.com/using-helper-classes-dry-scale-css/
 [bi-app-sass]: https://github.com/anasnakawa/bi-app-sass/blob/master/bi-app/_mixins.scss
+[rtl-grunt-sass]: https://github.com/ahmadajmi/rtl-grunt-sass
