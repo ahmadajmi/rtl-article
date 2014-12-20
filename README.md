@@ -27,7 +27,7 @@ Let's say this is the code for the RTL language template, we added the `lang="ar
 </html>
 ```
 
-The layout requires that in the normal direction (LTR) the `main` section should be float to the left, while `aside` should be to the right.
+The layout requires that in the normal direction (LTR) the `main` section should be floated to the left, while `aside` should be to the right.
 
 
 ``` css
@@ -36,7 +36,7 @@ main  { float: left; }
 aside { float: right; }
 ```
 
-Now for the RTL direction we should do the same thing above but in the oppisite direction or to mirror the layout, this will be the code to overide the original style in the same file.
+Now for the RTL direction we should do the same thing above but in the opposite direction or to mirror the layout, this will be the code to override the original style in the same file.
 
 ``` css
 // app.css
@@ -95,7 +95,7 @@ module.exports = function(grunt) {
 };
 ```
 
-The Sass task takes two files one for `ltr-app.scss` and `rtl-app.scss` then generate the CSS files from them. In both files we will define some variables for floats and directions and then import the code Sass file at the end.
+The Sass task takes two files one for `ltr-app.scss` and `rtl-app.scss` then generate the CSS files from them. In both files we will define some variables for floats and directions and then import the core Sass file at the end.
 
 `ltr-app.scss` file
 
