@@ -102,11 +102,11 @@ The Sass task takes two files one for `ltr-app.scss` and `rtl-app.scss` then gen
 ```css
 // LTR languages directions.
 
-$default-float:          left  !default;
-$opposite-float:        right  !default;
+$default-float:          left;
+$opposite-float:        right;
 
-$default-direction:       ltr  !default;
-$opposite-direction:      rtl  !default;
+$default-direction:       ltr;
+$opposite-direction:      rtl;
 
 // Import the main style
 
@@ -118,11 +118,11 @@ And `rtl-app.scss`
 ```css
 // RTL languages directions.
 
-$default-float:         right  !default;
-$opposite-float:         left  !default;
+$default-float:         right;
+$opposite-float:         left;
 
-$default-direction:       rtl  !default;
-$opposite-direction:      ltr  !default;
+$default-direction:       rtl;
+$opposite-direction:      ltr;
 
 // Import the main style
 
@@ -188,7 +188,7 @@ Setting server side configuration will enable us to switch between the generated
 
 ``` html
 <!DOCTYPE html>
-<html lang="..">
+<html lang="lang">
   <head>
     <%= if def-direction is ltr %>
   	<link rel="stylesheet" href="css/ltr-app.css">
